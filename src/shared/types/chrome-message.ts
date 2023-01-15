@@ -1,4 +1,4 @@
-export enum ChromeMessageType {
+export enum ChromeMessage {
     DISABLE_POPUP_SHOW = 'DISABLE_POPUP_SHOW',
     ENABLE_POPUP_SHOW = 'ENABLE_POPUP_SHOW',
 }

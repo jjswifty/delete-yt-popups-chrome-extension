@@ -1,5 +1,3 @@
-import { type CommonMessage } from "./message-type";
+import { ChromeMessage } from './chrome-message';
 
-export {
-	CommonMessage
-}
+export { ChromeMessage };
