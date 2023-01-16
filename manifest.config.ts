@@ -24,4 +24,11 @@ export default defineManifest(async () => ({
         default_popup: 'src/popup/index.html',
         default_title: 'Delete YT popup',
     },
+    permissions: [
+        'storage',
+        'tabs'
+    ],
+    externally_connectable: {
+        matches: ['https://*.youtube.com/*']
+    }
 }));

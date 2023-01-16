@@ -1,7 +1,4 @@
-import {
-    type SyncStorage,
-    type SyncStorageProps
-} from '../types/sync-storage';
+import { type SyncStorage, type SyncStorageProps } from '../types/sync-storage';
 
 /**
  * Picks up safely data from sync storage by prop.
@@ -14,8 +11,7 @@ export const safelyGetFromSyncStorage = async <T extends SyncStorageProps>(
     const valueFromSyncStorage = await chrome.storage.sync.get(prop);
 
     if (Object.keys(valueFromSyncStorage).length > 0) {
-        // Checked that object is not empty
-        return valueFromSyncStorage as SyncStorage[T];
+        return valueFromSyncStorage[prop];
     }
 
     return null;

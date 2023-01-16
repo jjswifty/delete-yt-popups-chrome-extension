@@ -1,10 +1,20 @@
-import { waitForElementToRender } from './shared/utils';
+import { safelyGetFromSyncStorage, setToSyncStorage, waitForElementToRender } from './shared/utils';
 import { ANNOYING_POPUP_CLASS, YOUTUBE_PLAYER_ID } from './shared/constants';
+import { BaseChromeMessage, ChromeMessageTypes } from './shared/types/chrome-message-types';
 
 (async () => {
     const player = (await waitForElementToRender(YOUTUBE_PLAYER_ID)) as HTMLElement;
+    const buttonStatus = await safelyGetFromSyncStorage('buttonStatus');
 
-    const popups: HTMLDivElement[] = [];
+    const popupsProxy = new Proxy<HTMLDivElement[]>([], {
+        set: (target, property, value: HTMLDivElement) => {
+            if (buttonStatus?.enabled) {
+                value.style.visibility = 'hidden'
+            }
+
+            return Reflect.set(target, property, value);
+        }
+    });
 
     const initConfig: MutationObserverInit = {
         subtree: true,
@@ -20,9 +30,7 @@ import { ANNOYING_POPUP_CLASS, YOUTUBE_PLAYER_ID } from './shared/constants';
                             node instanceof HTMLDivElement &&
                             node.classList.contains(ANNOYING_POPUP_CLASS)
                         ) {
-                            popups.push(node);
-                            //node.remove()
-                            //console.log('Удалили очередной надоедливый попап в конце видео.')
+                            popupsProxy.push(node);
                         }
                     });
                 }
@@ -32,7 +40,47 @@ import { ANNOYING_POPUP_CLASS, YOUTUBE_PLAYER_ID } from './shared/constants';
 
     observer.observe(player, initConfig);
 
-    const lol = await chrome.storage.sync.get('buttonState');
+    chrome.runtime.onMessage.addListener((msg: BaseChromeMessage) => {
+        switch (msg.type) {
+            case ChromeMessageTypes.DISABLE_POPUP_SHOW: {
 
-    console.log(lol);
+                console.log('Disable')
+
+                setToSyncStorage({
+                    buttonStatus: {
+                        enabled: false
+                    },
+                });
+
+                for (const popup of popupsProxy) {
+                    popup.style.visibility = 'hidden'
+                }
+
+                break
+            }
+
+            case ChromeMessageTypes.ENABLE_POPUP_SHOW: {
+
+                console.log('Enable')
+
+                setToSyncStorage({
+                    buttonStatus: {
+                        enabled: true
+                    },
+                });
+
+                for (const popup of popupsProxy) {
+                    popup.style.visibility = 'visible'
+                }
+
+                break;
+            }
+
+            default:
+                break;
+        }
+
+         return true;
+    })
+
 })();

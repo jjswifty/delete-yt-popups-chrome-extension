@@ -1,3 +1,3 @@
-import { ChromeMessage } from './chrome-message';
+import { ChromeMessageTypes } from './chrome-message-types';
 
-export { ChromeMessage };
+export { ChromeMessageTypes };
