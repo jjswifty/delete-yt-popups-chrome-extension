@@ -6,15 +6,17 @@ import { BaseChromeMessage, ChromeMessageTypes } from './shared/types/chrome-mes
     const player = (await waitForElementToRender(YOUTUBE_PLAYER_ID)) as HTMLElement;
     const buttonStatus = await safelyGetFromSyncStorage('buttonStatus');
 
+
     const popupsProxy = new Proxy<HTMLDivElement[]>([], {
         set: (target, property, value: HTMLDivElement) => {
-            if (buttonStatus?.enabled) {
+            if (buttonStatus?.enabled && value instanceof HTMLDivElement) {
                 value.style.visibility = 'hidden'
             }
 
             return Reflect.set(target, property, value);
         }
     });
+
 
     const initConfig: MutationObserverInit = {
         subtree: true,
@@ -40,47 +42,38 @@ import { BaseChromeMessage, ChromeMessageTypes } from './shared/types/chrome-mes
 
     observer.observe(player, initConfig);
 
+
     chrome.runtime.onMessage.addListener((msg: BaseChromeMessage) => {
-        switch (msg.type) {
-            case ChromeMessageTypes.DISABLE_POPUP_SHOW: {
+        if (msg.type === ChromeMessageTypes.Disable_Hiding) {
+            setToSyncStorage({
+                buttonStatus: {
+                    enabled: false
+                },
+            });
 
-                console.log('Disable')
-
-                setToSyncStorage({
-                    buttonStatus: {
-                        enabled: false
-                    },
-                });
-
-                for (const popup of popupsProxy) {
-                    popup.style.visibility = 'hidden'
-                }
-
-                break
+            for (const popup of popupsProxy) {
+                popup.style.visibility = 'visible'
             }
-
-            case ChromeMessageTypes.ENABLE_POPUP_SHOW: {
-
-                console.log('Enable')
-
-                setToSyncStorage({
-                    buttonStatus: {
-                        enabled: true
-                    },
-                });
-
-                for (const popup of popupsProxy) {
-                    popup.style.visibility = 'visible'
-                }
-
-                break;
-            }
-
-            default:
-                break;
         }
 
-         return true;
+        if (msg.type === ChromeMessageTypes.Enable_Hiding) {
+            setToSyncStorage({
+                buttonStatus: {
+                    enabled: true
+                },
+            });
+
+            for (const popup of popupsProxy) {
+                popup.style.visibility = 'hidden'
+            }
+        }
+
+        return true;
+    })
+
+
+    window.onunload = (() => {
+        observer.disconnect()
     })
 
 })();
