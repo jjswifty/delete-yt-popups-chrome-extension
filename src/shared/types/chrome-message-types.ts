@@ -1,6 +1,6 @@
 export enum ChromeMessageTypes {
-    DISABLE_POPUP_SHOW = 'DISABLE_POPUP_SHOW',
-    ENABLE_POPUP_SHOW = 'ENABLE_POPUP_SHOW',
+    Disable_Hiding = 'DISABLE_HIDING',
+    Enable_Hiding = 'ENABLE_HIDING',
 }
 
 export type BaseChromeMessage = {
