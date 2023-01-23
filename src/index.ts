@@ -1,6 +1,6 @@
 import { safelyGetFromSyncStorage, setToSyncStorage, waitForElementToRender } from './shared/utils';
 import { ANNOYING_POPUP_CLASS, YOUTUBE_PLAYER_ID } from './shared/constants';
-import { BaseChromeMessage, ChromeMessageTypes } from './shared/types/chrome-message-types';
+import { BaseChromeMessage, ChromeMessageTypes } from './shared/types';
 
 (async () => {
     const player = (await waitForElementToRender(YOUTUBE_PLAYER_ID)) as HTMLElement;

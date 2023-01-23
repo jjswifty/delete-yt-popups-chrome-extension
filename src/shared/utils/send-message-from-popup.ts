@@ -1,4 +1,4 @@
-import { BaseChromeMessage } from '../types/chrome-message-types';
+import { BaseChromeMessage } from '../types';
 
 export const sendMessageFromPopupToAllTabs = async (msg: BaseChromeMessage) => {
     const tabs = await chrome.tabs.query({

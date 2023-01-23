@@ -1,4 +1,4 @@
-import { type SyncStorage, type SyncStorageProps } from '../types/sync-storage';
+import { type SyncStorage, type SyncStorageProps } from '../types';
 
 /**
  * Just sets value to sync storage. Typed.
