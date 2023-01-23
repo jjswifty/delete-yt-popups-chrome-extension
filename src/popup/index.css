@@ -67,3 +67,8 @@ body {
     font-size: 17px;
     margin-left: 10px;
 }
+
+.app_warn-text {
+    color: white;
+    font-size: 17px;
+}

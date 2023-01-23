@@ -6,7 +6,7 @@ export default defineManifest(async () => ({
     manifest_version: 3,
     name: 'Delete YT popup',
     description: 'Sick of this shitty end cards on YouTube? Here is the solution.',
-    version: '1.0.0',
+    version: '1.1.0',
     content_scripts: [
         {
             all_frames: true,
