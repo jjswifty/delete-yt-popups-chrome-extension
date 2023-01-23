@@ -1,3 +1,6 @@
-import { ChromeMessage } from './chrome-message';
+import { BaseChromeMessage, ChromeMessageTypes } from './chrome-message-types';
+import { SyncStorage, SyncStorageProps } from "./sync-storage";
 
-export { ChromeMessage };
+
+export { ChromeMessageTypes };
+export type { SyncStorage, BaseChromeMessage, SyncStorageProps };

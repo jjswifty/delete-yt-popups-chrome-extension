@@ -1,38 +1,30 @@
 import { safelyGetFromSyncStorage, setToSyncStorage } from '../shared/utils';
-import { ChromeMessage } from '../shared/types';
+import { ChromeMessageTypes } from '../shared/types';
+import { sendMessageFromPopupToAllTabs } from '../shared/utils/send-message-from-popup';
 
 (async () => {
-    const toggleButton = document.querySelector('#crx-toggle-show') as HTMLInputElement;
+    const toggleButtonElement = document.querySelector('#crx-toggle-show') as HTMLInputElement;
+    const buttonStatusFromStorage = await safelyGetFromSyncStorage('buttonStatus');
 
-    const buttonStatus = await safelyGetFromSyncStorage('buttonStatus');
-
-    if (buttonStatus) {
-        toggleButton.checked = buttonStatus.enabled;
-
-        toggleButton.onclick = async () => {
-            await chrome.runtime.sendMessage({
-                type: buttonStatus.enabled
-                    ? ChromeMessage.ENABLE_POPUP_SHOW
-                    : ChromeMessage.DISABLE_POPUP_SHOW,
-            });
-            await setToSyncStorage({
-                buttonStatus,
-            });
-        };
+    if (buttonStatusFromStorage) {
+        toggleButtonElement.checked = buttonStatusFromStorage.enabled;
     } else {
-        toggleButton.checked = false;
+        toggleButtonElement.checked = false;
 
-        toggleButton.onclick = async () => {
-            await chrome.runtime.sendMessage({
-                type: ChromeMessage.DISABLE_POPUP_SHOW,
-            });
-            await setToSyncStorage({
-                buttonStatus: {
-                    enabled: false,
-                },
-            });
-        };
+        await setToSyncStorage({
+            buttonStatus: {
+                enabled: toggleButtonElement.checked,
+            },
+        });
     }
+
+    toggleButtonElement.onclick = async () => {
+        await sendMessageFromPopupToAllTabs({
+            type: toggleButtonElement.checked
+                ? ChromeMessageTypes.Enable_Hiding
+                : ChromeMessageTypes.Disable_Hiding,
+        });
+    };
 })();
 
 export {};

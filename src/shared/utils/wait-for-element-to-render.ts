@@ -11,7 +11,7 @@ export const waitForElementToRender = (selector: string) => {
             }
         });
 
-        observer.observe(document.body, {
+        observer.observe(document, {
             childList: true,
             subtree: true,
         });

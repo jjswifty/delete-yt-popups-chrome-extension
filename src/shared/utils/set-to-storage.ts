@@ -1,4 +1,4 @@
-import { type SyncStorage, type SyncStorageProps } from '../types/sync-storage';
+import { type SyncStorage, type SyncStorageProps } from '../types';
 
 /**
  * Just sets value to sync storage. Typed.
@@ -6,6 +6,6 @@ import { type SyncStorage, type SyncStorageProps } from '../types/sync-storage';
  */
 export const setToSyncStorage = async <T extends SyncStorageProps>(
     prop: Record<SyncStorageProps, SyncStorage[T]>,
-): Promise<void> => {
+) => {
     await chrome.storage.sync.set(prop);
 };
