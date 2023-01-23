@@ -7,20 +7,19 @@
         "dev": "vite",
         "build": "tsc && vite build",
         "preview": "vite preview",
-        "prepare": "husky install"
+        "format": "prettier --write \"./**/*.{ts,js,jsx,css,json,md}\""
     },
     "devDependencies": {
+        "@commitlint/cli": "^17.4.2",
+        "@commitlint/config-conventional": "^17.4.2",
         "@crxjs/vite-plugin": "^2.0.0-beta.10",
         "@types/chrome": "^0.0.208",
         "@types/node": "^18.11.18",
         "husky": "^8.0.3",
-        "lint-staged": "^13.1.0",
         "prettier": "^2.8.3",
         "typescript": "^4.9.3",
         "vite": "^4.0.0",
         "vite-plugin-checker": "^0.5.3"
     },
-    "lint-staged": {
-        "*.{ts,css,json,md}": "prettier --write"
-    }
+    "prettier": "./prettier.json"
 }

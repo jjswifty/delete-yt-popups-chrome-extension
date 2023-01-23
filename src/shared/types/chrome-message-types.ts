@@ -4,5 +4,5 @@ export enum ChromeMessageTypes {
 }
 
 export type BaseChromeMessage = {
-    type: ChromeMessageTypes
-}
+    type: ChromeMessageTypes;
+};
