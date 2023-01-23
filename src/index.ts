@@ -6,17 +6,15 @@ import { BaseChromeMessage, ChromeMessageTypes } from './shared/types';
     const player = (await waitForElementToRender(YOUTUBE_PLAYER_ID)) as HTMLElement;
     const buttonStatus = await safelyGetFromSyncStorage('buttonStatus');
 
-
     const popupsProxy = new Proxy<HTMLDivElement[]>([], {
         set: (target, property, value: HTMLDivElement) => {
             if (buttonStatus?.enabled && value instanceof HTMLDivElement) {
-                value.style.visibility = 'hidden'
+                value.style.visibility = 'hidden';
             }
 
             return Reflect.set(target, property, value);
-        }
+        },
     });
-
 
     const initConfig: MutationObserverInit = {
         subtree: true,
@@ -42,38 +40,35 @@ import { BaseChromeMessage, ChromeMessageTypes } from './shared/types';
 
     observer.observe(player, initConfig);
 
-
     chrome.runtime.onMessage.addListener((msg: BaseChromeMessage) => {
         if (msg.type === ChromeMessageTypes.Disable_Hiding) {
             setToSyncStorage({
                 buttonStatus: {
-                    enabled: false
+                    enabled: false,
                 },
             });
 
             for (const popup of popupsProxy) {
-                popup.style.visibility = 'visible'
+                popup.style.visibility = 'visible';
             }
         }
 
         if (msg.type === ChromeMessageTypes.Enable_Hiding) {
             setToSyncStorage({
                 buttonStatus: {
-                    enabled: true
+                    enabled: true,
                 },
             });
 
             for (const popup of popupsProxy) {
-                popup.style.visibility = 'hidden'
+                popup.style.visibility = 'hidden';
             }
         }
 
         return true;
-    })
+    });
 
-
-    window.onunload = (() => {
-        observer.disconnect()
-    })
-
+    window.onunload = () => {
+        observer.disconnect();
+    };
 })();
