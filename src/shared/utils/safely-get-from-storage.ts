@@ -1,7 +1,4 @@
-import {
-    type SyncStorage,
-    type SyncStorageProps
-} from '../types/sync-storage';
+import { type SyncStorage, type SyncStorageProps } from '../types/sync-storage';
 
 /**
  * Picks up safely data from sync storage by prop.
