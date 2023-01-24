@@ -7,4 +7,11 @@ Instantly allows you to hide and show (if you are a masochist), pop-ups in our b
 
 ## Installation
 
-The extension is currently under review. As soon as it is checked, a link will immediately appear here.
+Navigate to [Extension Page](https://chrome.google.com/webstore/detail/delete-yt-popup/nijjdoegocbeijbmpanhjlpocedlnjgf), and just click install.
+
+## Usage
+
+You must be on the **YouTube** page to use the extension. Go to YouTube, click on the extension icon and toggle the switch.
+Also you can pin the extension if you prefer.
+
+# PR's, Issues are welcome!
